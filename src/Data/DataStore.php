@@ -9,6 +9,7 @@
 namespace Acme\Data;
 
 use Acme\Entity\Client;
+use Acme\Entity\Template;
 use Acme\Entity\User;
 
 /**
@@ -28,12 +29,18 @@ class DataStore
     private $clientData;
 
     /**
+     * @var Template $templateData
+     */
+    private $templateData;
+
+    /**
      * DataStore constructor.
      */
     public function __construct()
     {
         $this->userData = new User();
         $this->clientData = new Client();
+        $this->templateData = new Template();
     }
 
     /**
@@ -54,6 +61,16 @@ class DataStore
     public function getClientData()
     {
         return $this->clientData;
+    }
+
+    /**
+     * Get template data
+     *
+     * @return Template
+     */
+    public function getTemplateData()
+    {
+        return $this->templateData;
     }
 }
 

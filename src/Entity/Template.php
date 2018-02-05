@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: User
  * Date: 05.02.2018
- * Time: 18:28
+ * Time: 18:36
  */
 
 namespace Acme\Entity;
@@ -11,12 +11,16 @@ namespace Acme\Entity;
 use PDO;
 use App\Db;
 
-class Client
+/**
+ * Class Template
+ * @package Acme\Entity
+ */
+class Template
 {
     /**
-     * Get list clients
+     * Get list templates
      *
-     * Get list all exists clients in database
+     * Get list all exists templates in database
      *
      * @return array
      */
@@ -24,7 +28,7 @@ class Client
     {
         $db = Db::connect();
 
-        $sql = "SELECT * FROM clients";
+        $sql = "SELECT * FROM template";
 
         $query = $db->prepare($sql);
 
@@ -34,20 +38,20 @@ class Client
     }
 
     /**
-     * Get user by user id
+     * Get item
      *
-     * @param int $id
+     * @param string $type
      * @return array
      */
-    public function getItemByUserId(int $id)
+    public function getItemByType(string $type)
     {
         $db = Db::connect();
 
-        $sql = "SELECT * FROM clients WHERE user_id = :id";
+        $sql = "SELECT * FROM template WHERE type = :type";
 
         $query = $db->prepare($sql);
 
-        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->bindParam(':type', $type, PDO::PARAM_STR);
 
         $query->execute();
 
