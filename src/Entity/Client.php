@@ -53,4 +53,25 @@ class Client
 
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
+
+    /**
+     * Get user by id
+     *
+     * @param int $id
+     * @return array
+     */
+    public function getItemById(int $id)
+    {
+        $db = Db::connect();
+
+        $sql = "SELECT * FROM clients WHERE id = :id";
+
+        $query = $db->prepare($sql);
+
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $query->execute();
+
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
 }
