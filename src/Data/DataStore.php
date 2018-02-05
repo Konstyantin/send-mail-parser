@@ -8,6 +8,7 @@
  */
 namespace Acme\Data;
 
+use Acme\Entity\Client;
 use Acme\Entity\User;
 
 /**
@@ -17,16 +18,22 @@ use Acme\Entity\User;
 class DataStore
 {
     /**
-     * @var User
+     * @var User $userData
      */
     private $userData;
+
+    /**
+     * @var Client $clientData
+     */
+    private $clientData;
 
     /**
      * DataStore constructor.
      */
     public function __construct()
     {
-        $this->userData = $this->getUserList();
+        $this->userData = new User();
+        $this->clientData = new Client();
     }
 
     /**
@@ -40,13 +47,13 @@ class DataStore
     }
 
     /**
-     * Get user list
+     * Get client data
      *
-     * @return User
+     * @return Client
      */
-    public function getUserList()
+    public function getClientData()
     {
-        return new User();
+        return $this->clientData;
     }
 }
 
