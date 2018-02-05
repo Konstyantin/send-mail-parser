@@ -8,14 +8,9 @@
  */
 namespace Acme\Controller;
 
-use Acme\Entity\Interest;
 use Acme\Entity\User;
-use Acme\Entity\UserInterest;
-use Acme\Model\User\RegisterValidation;
 use App\Controller;
-use App\Db;
-use App\FormData;
-use App\QueryData;
+use Acme\Data\DataStore;
 
 /**
  * Class IndexController
@@ -24,9 +19,22 @@ use App\QueryData;
 class UserController extends Controller
 {
     /**
+     * @var DataStore
+     */
+    private $dataStore;
+
+    /**
+     * UserController constructor.
+     */
+    public function __construct()
+    {
+        $this->dataStore = new DataStore();
+    }
+
+    /**
      * Alex action
      *
-     * @param $id
+     * @param $id int
      * @return bool
      */
     public function alexAction($id)
@@ -37,7 +45,7 @@ class UserController extends Controller
     /**
      * Yuriy action
      *
-     * @param $id
+     * @param $id int
      * @return bool
      */
     public function yuriyAction($id)

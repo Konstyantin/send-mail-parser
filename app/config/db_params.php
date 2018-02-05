@@ -11,7 +11,7 @@
  */
 return [
     'host'      => 'dcodeit.net',
-    'dbname'    => 'kostya.nagula',
+    'dbname'    => 'nagula-send-mail',
     'user'      => 'ifix',
     'password'  => 'ifix',
 ];
