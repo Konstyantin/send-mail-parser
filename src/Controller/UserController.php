@@ -44,7 +44,9 @@ class UserController extends Controller
 
         $this->parser = new ClientDataParser();
 
-        $this->sendMail = new SendMail();
+        $logData = $this->dataStore->getLogData();
+
+        $this->sendMail = new SendMail($logData);
     }
 
     /**

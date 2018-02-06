@@ -9,6 +9,7 @@
 namespace Acme\Data;
 
 use Acme\Entity\Client;
+use Acme\Entity\Logs;
 use Acme\Entity\Template;
 use Acme\Entity\User;
 
@@ -34,6 +35,11 @@ class DataStore
     private $templateData;
 
     /**
+     * @var Logs $logsData
+     */
+    private $logsData;
+
+    /**
      * DataStore constructor.
      */
     public function __construct()
@@ -41,6 +47,7 @@ class DataStore
         $this->userData = new User();
         $this->clientData = new Client();
         $this->templateData = new Template();
+        $this->logsData = new Logs();
     }
 
     /**
@@ -71,6 +78,16 @@ class DataStore
     public function getTemplateData()
     {
         return $this->templateData;
+    }
+
+    /**
+     * Get log data
+     *
+     * @return Logs
+     */
+    public function getLogData()
+    {
+        return $this->logsData;
     }
 }
 

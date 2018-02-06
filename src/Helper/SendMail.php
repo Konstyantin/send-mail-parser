@@ -11,6 +11,7 @@ namespace Acme\Helper;
 use Swift_Mailer;
 use Swift_SmtpTransport;
 use Swift_Message;
+use Acme\Entity\Logs;
 
 /**
  * Class SendMail
@@ -27,6 +28,20 @@ class SendMail
      * @var int $port
      */
     private $port = 25;
+
+    /**
+     * @var Logs $logs
+     */
+    private $logs;
+
+    /**
+     * SendMail constructor.
+     * @param Logs $logs
+     */
+    public function __construct(Logs $logs)
+    {
+        $this->logs = $logs;
+    }
 
     /**
      * Set configuration for Swift mailer smtp transport
@@ -62,5 +77,7 @@ class SendMail
         ;
 
         $result = $mailer->send($message);
+
+        $this->logs->addLogItem($user, $client, $template);
     }
 }
