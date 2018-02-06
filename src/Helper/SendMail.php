@@ -22,7 +22,7 @@ class SendMail
     /**
      * @var string $host
      */
-    private $host = 'localhost';
+    private $host = 'mail.codeit.com.ua';
 
     /**
      * @var int $port
@@ -66,18 +66,33 @@ class SendMail
      */
     public function send($user, $client, $template)
     {
+        $status = 'success';
+
         $transport = $this->setConfiguration($user);
 
         $mailer = new Swift_Mailer($transport);
 
-        $message = (new Swift_Message($template['subject']))
-            ->setFrom(['john@doe.com' => 'John Doe'])
-            ->setTo(['kostyannagula@gmail.com'])
-            ->setBody($template['body'])
-        ;
+        try {
+            $message = (new Swift_Message($template['subject']))
+                ->setFrom($user->email)
+                ->setTo($client->email)
+                ->setBody($template['body'])
+            ;
 
-        $result = $mailer->send($message);
+            if (!$mailer->send($message, $failures))
+            {
+                echo "Failures:";
+                print_r($failures);
+                $status = 'fail';
+            }
 
-        $this->logs->addLogItem($user, $client, $template);
+            $this->logs->addLogItem($user, $client, $template, $status);
+
+        } catch (\Exception $e) {
+
+            $status = 'fail';
+
+            $this->logs->addLogItem($user, $client, $template, $status);
+        }
     }
 }
