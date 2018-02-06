@@ -60,7 +60,7 @@ class Client
      * @param int $id
      * @return array
      */
-    public function getItemById(int $id)
+    public function getItemById($id)
     {
         $db = Db::connect();
 

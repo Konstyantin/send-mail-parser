@@ -40,10 +40,10 @@ class Template
     /**
      * Get item
      *
-     * @param string $type
+     * @param mixed $type
      * @return array
      */
-    public function getItemByType(string $type)
+    public function getItemByType($type)
     {
         $db = Db::connect();
 
@@ -52,6 +52,21 @@ class Template
         $query = $db->prepare($sql);
 
         $query->bindParam(':type', $type, PDO::PARAM_STR);
+
+        $query->execute();
+
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function getItemById(int $id)
+    {
+        $db = Db::connect();
+
+        $sql = "SELECT * FROM template WHERE id = :id";
+
+        $query = $db->prepare($sql);
+
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
 
         $query->execute();
 

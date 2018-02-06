@@ -23,31 +23,24 @@ class ClientDataParser
      *
      * @param $client
      * @param $template
-     * @return mixed
+     * @return array
      */
     public function parseMail($client, $template)
     {
-        $template->subject = $this->parseComponent($client, $template->subject);
-        $template->body = $this->parseComponent($client, $template->body);
+        $result = [];
 
-        return $template;
-    }
-
-    /**
-     * Parse component
-     *
-     * @param $client
-     * @param string $text
-     * @return mixed|string
-     */
-    protected function parseComponent($client, string $text)
-    {
         $clientName = $client->name;
         $clientCompany = $client->company;
 
-        $text = str_replace('[Name]', $clientName, $text);
-        $text = str_replace('[Company]', $clientCompany, $text);
+        $templateSubjectReplace = str_replace('[Name]', $clientCompany, $template->subject);
+        $templateSubjectReplace = str_replace('[Company]', $clientCompany, $templateSubjectReplace);
+        $templateBodyReplace = str_replace('[Name]', $clientName, $template->body);
+        $templateBodyReplace = str_replace('[Company]', $clientName, $templateBodyReplace);
 
-        return $text;
+        $result['subject'] = $templateSubjectReplace;
+        $result['body'] = $templateBodyReplace;
+
+        return $result;
     }
+
 }

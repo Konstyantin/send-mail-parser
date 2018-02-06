@@ -12,6 +12,7 @@ use Acme\Entity\User;
 use Acme\Helper\ClientDataParser;
 use App\Controller;
 use Acme\Data\DataStore;
+use Acme\Helper\SendMail;
 
 /**
  * Class IndexController
@@ -30,6 +31,11 @@ class UserController extends Controller
     private $parser;
 
     /**
+     * @var SendMail $sendMail
+     */
+    private $sendMail;
+
+    /**
      * UserController constructor.
      */
     public function __construct()
@@ -37,6 +43,8 @@ class UserController extends Controller
         $this->dataStore = new DataStore();
 
         $this->parser = new ClientDataParser();
+
+        $this->sendMail = new SendMail();
     }
 
     /**
@@ -47,11 +55,20 @@ class UserController extends Controller
      */
     public function alexAction($id)
     {
-        $client = $this->dataStore->getClientData()->getItemById(1);
+        $user = $this->dataStore->getUserData()->getItemByName('alex');
 
-        $template = $this->dataStore->getTemplateData()->getItemByType('2nd Reach Out');
+        $userId = (int) $user->id;
 
-        $mail = $this->parser->parseMail($client, $template);
+        $clientList = $this->dataStore->getClientData()->getItemByUserId($userId);
+
+        $template = $this->dataStore->getTemplateData()->getItemByType($id);
+
+        foreach ($clientList as $clientItem) {
+
+            $mailMessage = $this->parser->parseMail($clientItem, $template);
+
+            $this->sendMail->send($user, $clientItem, $mailMessage);
+        }
 
         return true;
     }
