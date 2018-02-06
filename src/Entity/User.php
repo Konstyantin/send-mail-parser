@@ -68,7 +68,7 @@ class User
     {
         $db = Db::connect();
 
-        $sql = "SELECT * FROM user WHERE name = :name";
+        $sql = "SELECT * FROM user WHERE first_name = :name";
 
         $query = $db->prepare($sql);
 

@@ -72,17 +72,17 @@ class SendMail
 
         $mailer = new Swift_Mailer($transport);
 
+        $userFullName = $user->first_name . ' ' . $user->last_name;
+
         try {
             $message = (new Swift_Message($template['subject']))
-                ->setFrom($user->email)
+                ->setFrom([$user->email => $userFullName])
                 ->setTo($client->email)
                 ->setBody($template['body'])
             ;
 
             if (!$mailer->send($message, $failures))
             {
-                echo "Failures:";
-                print_r($failures);
                 $status = 'fail';
             }
 

@@ -57,7 +57,7 @@ class UserController extends Controller
      */
     public function alexAction($id)
     {
-        $user = $this->dataStore->getUserData()->getItemByName('alex');
+        $user = $this->dataStore->getUserData()->getItemByName('Alexey');
 
         $userId = (int) $user->id;
 
@@ -65,11 +65,13 @@ class UserController extends Controller
 
         $template = $this->dataStore->getTemplateData()->getItemByTypeUserId($id, $userId);
 
-        foreach ($clientList as $clientItem) {
+        if ($template && $clientList) {
+            foreach ($clientList as $clientItem) {
 
-            $mailMessage = $this->parser->parseMail($clientItem, $template);
+                $mailMessage = $this->parser->parseMail($clientItem, $template);
 
-            $this->sendMail->send($user, $clientItem, $mailMessage);
+                $this->sendMail->send($user, $clientItem, $mailMessage);
+            }
         }
 
         return true;
@@ -83,7 +85,7 @@ class UserController extends Controller
      */
     public function yuriyAction($id)
     {
-        $user = $this->dataStore->getUserData()->getItemByName('yuriy');
+        $user = $this->dataStore->getUserData()->getItemByName('Yuriy');
 
         $userId = (int) $user->id;
 
@@ -91,11 +93,14 @@ class UserController extends Controller
 
         $template = $this->dataStore->getTemplateData()->getItemByTypeUserId($id, $userId);
 
-        foreach ($clientList as $clientItem) {
+        if ($template && $clientList) {
+            foreach ($clientList as $clientItem) {
 
-            $mailMessage = $this->parser->parseMail($clientItem, $template);
+                $mailMessage = $this->parser->parseMail($clientItem, $template);
 
-            $this->sendMail->send($user, $clientItem, $mailMessage);
+                $this->sendMail->send($user, $clientItem, $mailMessage);
+            }
+
         }
 
         return true;
