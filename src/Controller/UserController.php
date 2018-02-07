@@ -13,6 +13,7 @@ use Acme\Helper\ClientDataParser;
 use App\Controller;
 use Acme\Data\DataStore;
 use Acme\Helper\SendMail;
+use SimpleExcel\SimpleExcel;
 
 /**
  * Class IndexController
@@ -104,5 +105,52 @@ class UserController extends Controller
         }
 
         return true;
+    }
+
+    /**
+     * Client action
+     *
+     * @return bool
+     */
+    public function clientAction()
+    {
+        $path = "uploads/";
+
+        if (!empty($_FILES['uploaded_file'])) {
+
+            $path = $path . basename($_FILES['uploaded_file']['name']);
+
+            if (move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $path)) {
+                echo "The file " . basename($_FILES['uploaded_file']['name']) . " has been uploaded";
+            } else {
+                echo "There was an error uploading the file, please try again!";
+            }
+
+            if (($handle = fopen($path, "r")) !== false) {
+
+                $columnList = [];
+
+                $dataList = [];
+
+                while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                    if (empty($columnList)) {
+                        foreach ($data as $item) {
+                            $columnList[] = $item;
+                        }
+                    } else {
+                        $client = [];
+                        foreach ($data as $key => $value) {
+                            $client[$columnList[$key]] = $value;
+                        }
+
+                        $dataList[] = $client;
+                    }
+                }
+
+                fclose($handle);
+            }
+        }
+
+        return $this->render('user/client');
     }
 }
