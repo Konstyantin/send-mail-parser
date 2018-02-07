@@ -74,4 +74,60 @@ class Client
 
         return $query->fetch(PDO::FETCH_OBJ);
     }
+
+    /**
+     * Create list records
+     *
+     * @param $data
+     * @return \PDOStatement
+     */
+    public function createList($data)
+    {
+        $db = Db::connect();
+
+        $queryList = $this->buildMultipleInsertQuery($data);
+
+        $sql = "INSERT INTO clients (`name`, `email`, `company`, `user_id`) VALUES $queryList";
+
+        $query = $db->prepare($sql);
+
+        $query->execute();
+
+        return $query;
+    }
+
+    /**
+     * Build multiple insert query
+     *
+     * Build query for multiple insert record item
+     *
+     * @param $data
+     * @return string
+     */
+    public function buildMultipleInsertQuery($data)
+    {
+        $query = '';
+
+        foreach ($data as $item) {
+            $query = $query . " ('$item[name]', '$item[email]', '$item[company]', '$item[user_id]'),";
+        }
+
+        $query = rtrim($query, ',');
+
+        return $query;
+    }
+
+    /**
+     * Delete list client records
+     */
+    public function deleteList()
+    {
+        $db = Db::connect();
+
+        $sql = "DELETE FROM clients";
+
+        $query = $db->prepare($sql);
+
+        $query->execute();
+    }
 }

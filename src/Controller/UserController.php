@@ -122,32 +122,38 @@ class UserController extends Controller
 
             if (move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $path)) {
                 echo "The file " . basename($_FILES['uploaded_file']['name']) . " has been uploaded";
+
+                if (($handle = fopen($path, "r")) !== false) {
+
+                    $columnList = [];
+
+                    $dataList = [];
+
+                    while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                        if (empty($columnList)) {
+                            foreach ($data as $item) {
+                                $columnList[] = $item;
+                            }
+                        } else {
+                            $client = [];
+                            foreach ($data as $key => $value) {
+                                $client[$columnList[$key]] = $value;
+                            }
+
+                            $dataList[] = $client;
+                        }
+                    }
+
+                    $this->dataStore->getClientData()->deleteList();
+
+                    $this->dataStore->getClientData()->createList($dataList);
+
+                    fclose($handle);
+
+                    unlink($path);
+                }
             } else {
                 echo "There was an error uploading the file, please try again!";
-            }
-
-            if (($handle = fopen($path, "r")) !== false) {
-
-                $columnList = [];
-
-                $dataList = [];
-
-                while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-                    if (empty($columnList)) {
-                        foreach ($data as $item) {
-                            $columnList[] = $item;
-                        }
-                    } else {
-                        $client = [];
-                        foreach ($data as $key => $value) {
-                            $client[$columnList[$key]] = $value;
-                        }
-
-                        $dataList[] = $client;
-                    }
-                }
-
-                fclose($handle);
             }
         }
 
