@@ -32,10 +32,10 @@ class ClientDataParser
         $clientName = $client->name;
         $clientCompany = $client->company;
 
-        $templateSubjectReplace = str_replace('[Name]', $clientCompany, $template->subject);
+        $templateSubjectReplace = str_replace('[Name]', $clientName, $template->subject);
         $templateSubjectReplace = str_replace('[Company]', $clientCompany, $templateSubjectReplace);
         $templateBodyReplace = str_replace('[Name]', $clientName, $template->body);
-        $templateBodyReplace = str_replace('[Company]', $clientName, $templateBodyReplace);
+        $templateBodyReplace = str_replace('[Company]', $clientCompany, $templateBodyReplace);
 
         $result['subject'] = $templateSubjectReplace;
         $result['body'] = $templateBodyReplace;

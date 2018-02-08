@@ -13,7 +13,6 @@ use Acme\Helper\ClientDataParser;
 use App\Controller;
 use Acme\Data\DataStore;
 use Acme\Helper\SendMail;
-use SimpleExcel\SimpleExcel;
 
 /**
  * Class IndexController
@@ -53,6 +52,8 @@ class UserController extends Controller
     /**
      * Alex action
      *
+     * Send mail from Alex mail to Alex clients
+     *
      * @param $id int
      * @return bool
      */
@@ -81,6 +82,8 @@ class UserController extends Controller
     /**
      * Yuriy action
      *
+     * Send mail from Yuriy mail to Yuriy clients
+     *
      * @param $id int
      * @return bool
      */
@@ -101,7 +104,36 @@ class UserController extends Controller
 
                 $this->sendMail->send($user, $clientItem, $mailMessage);
             }
+        }
 
+        return true;
+    }
+
+    /**
+     * Andrew action
+     *
+     * Send mail from Andrew mail to Andrew clients
+     *
+     * @param $id int
+     * @return bool
+     */
+    public function andrewAction($id)
+    {
+        $user = $this->dataStore->getUserData()->getItemByName('Andrew');
+
+        $userId = (int) $user->id;
+
+        $clientList = $this->dataStore->getClientData()->getItemByUserId($userId);
+
+        $template = $this->dataStore->getTemplateData()->getItemByTypeUserId($id, $userId);
+
+        if ($template && $clientList) {
+            foreach ($clientList as $clientItem) {
+
+                $mailMessage = $this->parser->parseMail($clientItem, $template);
+
+                $this->sendMail->send($user, $clientItem, $mailMessage);
+            }
         }
 
         return true;
