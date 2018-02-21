@@ -23,12 +23,11 @@ class Logs
      * Create og record in database by passed user, client, templates and status values
      *
      * @param $user
-     * @param $client
-     * @param $template
+     * @param $data
      * @param string $status
      * @return \PDOStatement
      */
-    public function addLogItem($user, $client, $template, $status = 'success')
+    public function addLogItem($user, $data, $status = 'success')
     {
         $db = Db::connect();
 
@@ -37,9 +36,9 @@ class Logs
         $query = $db->prepare($sql);
 
         $query->bindParam(':from', $user->email, PDO::PARAM_STR);
-        $query->bindParam(':to', $client->email, PDO::PARAM_STR);
-        $query->bindParam(':subject', $template['subject'], PDO::PARAM_STR);
-        $query->bindParam(':body', $template['body'], PDO::PARAM_STR);
+        $query->bindParam(':to', $data->to, PDO::PARAM_STR);
+        $query->bindParam(':subject', $data->subject, PDO::PARAM_STR);
+        $query->bindParam(':body', $data->body, PDO::PARAM_STR);
         $query->bindParam(':status', $status, PDO::PARAM_STR);
 
         $query->execute();

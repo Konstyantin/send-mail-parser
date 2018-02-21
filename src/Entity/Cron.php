@@ -64,4 +64,24 @@ class Cron
 
         return $query;
     }
+
+    /**
+     * Get first record
+     *
+     * @return mixed
+     */
+    public function getFirstRecord()
+    {
+        $db = Db::connect();
+
+        $sql = "SELECT * FROM cron WHERE status = 0 LIMIT 1";
+
+        $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
+
+        $query = $db->prepare($sql);
+
+        $query->execute();
+
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
 }

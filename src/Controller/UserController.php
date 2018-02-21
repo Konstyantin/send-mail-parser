@@ -113,6 +113,7 @@ class UserController extends Controller
                 $mailMessage = $this->parser->parseMail($clientItem, $template);
 
                 $this->cronMail->register($user, $clientItem, $mailMessage);
+
 //                $this->sendMail->send($user, $clientItem, $mailMessage);
             }
         }
@@ -208,6 +209,15 @@ class UserController extends Controller
      */
     public function cronAction()
     {
-        var_dump('cron');
+        $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
+
+//        var_dump($cronRecord);
+
+        $userEmail = $cronRecord->from;
+
+        $user = $this->dataStore->getUserData()->getItemByEmail($userEmail);
+
+        $this->sendMail->send($user, $cronRecord);
+
     }
 }

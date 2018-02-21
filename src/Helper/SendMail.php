@@ -61,10 +61,9 @@ class SendMail
      * Send mail
      *
      * @param $user
-     * @param $client
-     * @param $template
+     * @param $data
      */
-    public function send($user, $client, $template)
+    public function send($user, $data)
     {
         $status = 'success';
 
@@ -72,13 +71,14 @@ class SendMail
 
         $mailer = new Swift_Mailer($transport);
 
-        $userFullName = $user->first_name . ' ' . $user->last_name;
-
+//        var_dump($data);
+//        $userFullName = $user->first_name . ' ' . $user->last_name;
+//
         try {
-            $message = (new Swift_Message($template['subject']))
-                ->setFrom([$user->email => $userFullName])
-                ->setTo($client->email)
-                ->setBody($template['body'])
+            $message = (new Swift_Message($data->subject))
+                ->setFrom([$data->from => $data->full_name])
+                ->setTo($data->to)
+                ->setBody($data->body)
             ;
 
             if (!$mailer->send($message, $failures))
@@ -86,13 +86,13 @@ class SendMail
                 $status = 'fail';
             }
 
-            $this->logs->addLogItem($user, $client, $template, $status);
+            $this->logs->addLogItem($user, $data, $status);
 
         } catch (\Exception $e) {
 
             $status = 'fail';
 
-            $this->logs->addLogItem($user, $client, $template, $status);
+            $this->logs->addLogItem($user, $data, $status);
         }
     }
 }
