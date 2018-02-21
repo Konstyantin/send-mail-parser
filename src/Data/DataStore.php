@@ -96,5 +96,15 @@ class DataStore
     {
         return $this->logsData;
     }
+
+    /**
+     * Get cron data
+     *
+     * @return Cron
+     */
+    public function getCronData()
+    {
+        return $this->cronData;
+    }
 }
 

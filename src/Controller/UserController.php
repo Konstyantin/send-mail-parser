@@ -10,6 +10,7 @@ namespace Acme\Controller;
 
 use Acme\Entity\User;
 use Acme\Helper\ClientDataParser;
+use Acme\Helper\CronMail;
 use App\Controller;
 use Acme\Data\DataStore;
 use Acme\Helper\SendMail;
@@ -36,6 +37,11 @@ class UserController extends Controller
     private $sendMail;
 
     /**
+     * @var CronMail $cronMail
+     */
+    private $cronMail;
+
+    /**
      * UserController constructor.
      */
     public function __construct()
@@ -46,7 +52,11 @@ class UserController extends Controller
 
         $logData = $this->dataStore->getLogData();
 
+        $cronData = $this->dataStore->getCronData();
+
         $this->sendMail = new SendMail($logData);
+
+        $this->cronMail = new CronMail($cronData);
     }
 
     /**
@@ -102,7 +112,8 @@ class UserController extends Controller
 
                 $mailMessage = $this->parser->parseMail($clientItem, $template);
 
-                $this->sendMail->send($user, $clientItem, $mailMessage);
+                $this->cronMail->register($user, $clientItem, $mailMessage);
+//                $this->sendMail->send($user, $clientItem, $mailMessage);
             }
         }
 
