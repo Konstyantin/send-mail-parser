@@ -53,6 +53,6 @@ class CronMail
 
         $randMinutes = rand(1, 5);
 
-        return $time + ($randMinutes * 60);
+        return $time + ($randMinutes * 60) + $randMinutes;
     }
 }

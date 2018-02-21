@@ -82,7 +82,7 @@ class UserController extends Controller
 
                 $mailMessage = $this->parser->parseMail($clientItem, $template);
 
-                $this->sendMail->send($user, $clientItem, $mailMessage);
+                $this->cronMail->register($user, $clientItem, $mailMessage);
             }
         }
 
@@ -113,8 +113,6 @@ class UserController extends Controller
                 $mailMessage = $this->parser->parseMail($clientItem, $template);
 
                 $this->cronMail->register($user, $clientItem, $mailMessage);
-
-//                $this->sendMail->send($user, $clientItem, $mailMessage);
             }
         }
 
@@ -144,7 +142,7 @@ class UserController extends Controller
 
                 $mailMessage = $this->parser->parseMail($clientItem, $template);
 
-                $this->sendMail->send($user, $clientItem, $mailMessage);
+                $this->cronMail->register($user, $clientItem, $mailMessage);
             }
         }
 
@@ -209,19 +207,25 @@ class UserController extends Controller
      */
     public function cronAction()
     {
-       $actionTime = $this->cronMail->generateActionTime();
+        $time = time();
 
-//        $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
-//
-//        $userEmail = $cronRecord->from;
-//
-//        $user = $this->dataStore->getUserData()->getItemByEmail($userEmail);
-//
-//        $this->dataStore->getCronData()->setSenderStatus($cronRecord->id);
+        $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
 
-//        $this->sendMail->send($user, $cronRecord);
-//
-//        $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
+        if ($cronRecord->action_time < $time) {
 
+            $userEmail = $cronRecord->from;
+
+            $user = $this->dataStore->getUserData()->getItemByEmail($userEmail);
+
+            $this->sendMail->send($user, $cronRecord);
+
+            $this->dataStore->getCronData()->setSenderStatus($cronRecord->id);
+
+            $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
+
+            $actionTime = $this->cronMail->generateActionTime();
+
+            $this->dataStore->getCronData()->changeActionTime($cronRecord->id, $actionTime);
+        }
     }
 }

@@ -105,4 +105,27 @@ class Cron
 
         return $query;
     }
+
+    /**
+     * Change action time
+     *
+     * @param int $id
+     * @param int $time
+     * @return \PDOStatement
+     */
+    public function changeActionTime(int $id, int $time)
+    {
+        $db = Db::connect();
+
+        $sql = "UPDATE cron SET action_time = :action_time WHERE id = :id";
+
+        $query = $db->prepare($sql);
+
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->bindParam(':action_time', $time, PDO::PARAM_INT);
+
+        $query->execute();
+
+        return $query;
+    }
 }
