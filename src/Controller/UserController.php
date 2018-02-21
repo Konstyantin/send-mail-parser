@@ -209,13 +209,15 @@ class UserController extends Controller
      */
     public function cronAction()
     {
-        $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
+       $actionTime = $this->cronMail->generateActionTime();
 
-        $userEmail = $cronRecord->from;
-
-        $user = $this->dataStore->getUserData()->getItemByEmail($userEmail);
-
-        $this->dataStore->getCronData()->setSenderStatus($cronRecord->id);
+//        $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
+//
+//        $userEmail = $cronRecord->from;
+//
+//        $user = $this->dataStore->getUserData()->getItemByEmail($userEmail);
+//
+//        $this->dataStore->getCronData()->setSenderStatus($cronRecord->id);
 
 //        $this->sendMail->send($user, $cronRecord);
 //

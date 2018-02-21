@@ -41,4 +41,18 @@ class CronMail
     {
         $this->cron->addCronItem($user, $client, $template);
     }
+
+    /**
+     * Generate action time
+     *
+     * @return int
+     */
+    public function generateActionTime()
+    {
+        $time = time();
+
+        $randMinutes = rand(1, 5);
+
+        return $time + ($randMinutes * 60);
+    }
 }
