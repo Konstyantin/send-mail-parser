@@ -211,13 +211,15 @@ class UserController extends Controller
     {
         $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
 
-//        var_dump($cronRecord);
-
         $userEmail = $cronRecord->from;
 
         $user = $this->dataStore->getUserData()->getItemByEmail($userEmail);
 
-        $this->sendMail->send($user, $cronRecord);
+        $this->dataStore->getCronData()->setSenderStatus($cronRecord->id);
+
+//        $this->sendMail->send($user, $cronRecord);
+//
+//        $cronRecord = $this->dataStore->getCronData()->getFirstRecord();
 
     }
 }

@@ -76,12 +76,33 @@ class Cron
 
         $sql = "SELECT * FROM cron WHERE status = 0 LIMIT 1";
 
-        $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 
         $query = $db->prepare($sql);
 
         $query->execute();
 
         return $query->fetch(PDO::FETCH_OBJ);
+    }
+
+    /**
+     * Set sender status
+     *
+     * @param int $id
+     * @return \PDOStatement
+     */
+    public function setSenderStatus(int $id)
+    {
+        $db = Db::connect();
+
+        $sql = "UPDATE cron SET status = 1 WHERE id = :id";
+
+        $query = $db->prepare($sql);
+
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $query->execute();
+
+        return $query;
     }
 }
