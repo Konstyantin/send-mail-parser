@@ -191,4 +191,12 @@ class UserController extends Controller
 
         return $this->render('user/client');
     }
+
+    /**
+     * Cron Action
+     */
+    public function cronAction()
+    {
+        var_dump('cron');
+    }
 }

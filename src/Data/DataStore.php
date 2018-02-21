@@ -9,6 +9,7 @@
 namespace Acme\Data;
 
 use Acme\Entity\Client;
+use Acme\Entity\Cron;
 use Acme\Entity\Logs;
 use Acme\Entity\Template;
 use Acme\Entity\User;
@@ -40,14 +41,20 @@ class DataStore
     private $logsData;
 
     /**
+     * @var Cron $cronData
+     */
+    private $cronData;
+
+    /**
      * DataStore constructor.
      */
     public function __construct()
     {
         $this->userData = new User();
+        $this->logsData = new Logs();
+        $this->cronData = new Cron();
         $this->clientData = new Client();
         $this->templateData = new Template();
-        $this->logsData = new Logs();
     }
 
     /**

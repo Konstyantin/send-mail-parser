@@ -11,8 +11,9 @@
  */
 return [
     'alex/'         => 'user/alex/$1',
-    'yuriy/'         => 'user/yuriy/$1',
-    'andrew/'         => 'user/andrew/$1',
-    'client'         => 'user/client/',
+    'yuriy/'        => 'user/yuriy/$1',
+    'andrew/'       => 'user/andrew/$1',
+    'client'        => 'user/client/',
+    'cron'          => 'user/cron'
 //    'user/([0-9]+)'         => 'user/view/$1',
 ];
