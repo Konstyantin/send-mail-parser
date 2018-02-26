@@ -165,13 +165,21 @@ class UserController extends Controller
             if (move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $path)) {
                 echo "The file " . basename($_FILES['uploaded_file']['name']) . " has been uploaded";
 
+                $handle = fopen($path, "r");
+
+                $separate = ',';
+
+                if (count($data = fgetcsv($handle, 1000, $separate)) <= 1) {
+                    $separate = ';';
+                }
+
                 if (($handle = fopen($path, "r")) !== false) {
 
                     $columnList = [];
 
                     $dataList = [];
 
-                    while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                    while (($data = fgetcsv($handle, 1000, $separate)) !== false) {
                         if (empty($columnList)) {
                             foreach ($data as $item) {
                                 $columnList[] = $item;

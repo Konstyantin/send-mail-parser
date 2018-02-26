@@ -109,6 +109,9 @@ class Client
         $query = '';
 
         foreach ($data as $item) {
+            $item['name'] = str_replace("'", "''", $item['name']);
+            $item['email'] = str_replace("'", "''", $item['email']);
+            $item['company'] = str_replace("'", "''", $item['company']);
             $query = $query . " ('$item[name]', '$item[email]', '$item[company]', '$item[user_id]'),";
         }
 
